@@ -2,34 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
+using UnityStandardAssets.Characters.FirstPerson;
 
 /// <summary>
-/// ¿ØÖÆµĞÈËµÄÒÆ¶¯¡¢Ğı×ªºÍÑ°Â·
+/// ï¿½ï¿½ï¿½Æµï¿½ï¿½Ëµï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Ñ°Â·
 /// </summary>
 public class EnemyMove : MonoBehaviour
 {
     /// <summary>
-    /// µĞÈËËÙ¶È
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
     /// </summary>
     public float speed = 2;
     /// <summary>
-    /// µĞÈËÂ·Ïß
+    /// ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
     /// </summary>
     public Route way;
     public float rotateSpeed = 10;
 
+    private Transform target;
+    [Header("æ£€æµ‹ç©å®¶")]
+    public float detectDistance = 10;//æ‰‡å½¢è·ç¦»
+    public float detectAngleRange = 120;//æ‰‡å½¢çš„è§’åº¦
+
+
+    private void Awake()
+    {
+        target = FindObjectOfType<RigidbodyFirstPersonController>().transform;
+    }
 
     /// <summary>
-    /// ÏòÇ°ÒÆ¶¯
+    /// ï¿½ï¿½Ç°ï¿½Æ¶ï¿½
     /// </summary>
     public void MoveForward()
     {
         transform.Translate(0,0,speed*Time.deltaTime);
     }
     /// <summary>
-    /// ÏòÄ¿±êµãĞı×ª
+    /// ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½×ª
     /// </summary>
-    /// <param name="target">Ä¿±êµã</param>
+    /// <param name="target">Ä¿ï¿½ï¿½ï¿½</param>
     public void RotateByLookAtTarget(Vector3 target)
     {
         Vector3 targetDirection = target - transform.position;
@@ -41,19 +52,50 @@ public class EnemyMove : MonoBehaviour
         //transform.LookAt(target);
     }
 
-    //Ñ°Â·µÄÄ¿±êÂ·Ïßµã
+    //Ñ°Â·ï¿½ï¿½Ä¿ï¿½ï¿½Â·ï¿½ßµï¿½
     private int wayPointIndex = 0;
     /// <summary>
     /// Ñ°Â·
     /// </summary>
-    /// <returns>Â·ÏßÊÇ·ñÓĞĞ§</returns>
+    /// <returns>Â·ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ğ§</returns>
     public bool WayFinding()
     {
-        if (wayPointIndex >= way.RepresentWayLine.childCount) return false;
-        RotateByLookAtTarget(way.RepresentWayLine.GetChild(wayPointIndex).position);
-        MoveForward();
-        if (Vector3.Distance(this.transform.position, way.RepresentWayLine.GetChild(wayPointIndex).position) < 0.1)
-            wayPointIndex++;
-        return true;
+
+        
+        if (Vector3.Distance(transform.position, target.position) < detectDistance)
+        {
+            Vector3 norVec = transform.rotation * Vector3.forward * 5;
+            Debug.DrawRay(transform.position, norVec, Color.red);  // æ•Œäººå‰è¿›æ–¹å‘
+            Debug.DrawLine(transform.position, target.position, Color.green);  //æ•Œäººä¸ç©å®¶è¿çº¿
+            float jiaJiao = Mathf.Acos(Vector3.Dot(norVec.normalized, (target.position - transform.position).normalized)) * Mathf.Rad2Deg; //è®¡ç®—ä¸¤ä¸ªå‘é‡é—´çš„å¤¹è§’
+            if (jiaJiao <= detectAngleRange * 0.5f)
+            {
+                Debug.Log("åœ¨æ‰‡å½¢èŒƒå›´å†…");
+                RotateByLookAtTarget(target.position);
+                MoveForward();
+                return true;
+            }
+            return false;
+
+        }else
+        {
+            if (wayPointIndex >= way.RepresentWayLine.childCount) return false;
+            RotateByLookAtTarget(way.RepresentWayLine.GetChild(wayPointIndex).position);
+            MoveForward();
+            if (Vector3.Distance(this.transform.position, way.RepresentWayLine.GetChild(wayPointIndex).position) < 0.1)
+                wayPointIndex++;
+            return true;
+
+        }
+
+
+
+
+
     }
+
+
+
+
+  
 }

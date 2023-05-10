@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ¿ØÖÆµÐÈËÐÐÎª
+/// ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Îª
 /// </summary>
 [RequireComponent(typeof(EnemyAnimations))]
 [RequireComponent(typeof(EnemyMove))]
@@ -11,7 +11,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     /// <summary>
-    /// ¶¨ÒåµÐÈË×´Ì¬µÄÃ¶¾Ù
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½Ã¶ï¿½ï¿½
     /// </summary>
     public enum State
     {
@@ -19,7 +19,7 @@ public class EnemyController : MonoBehaviour
         WayFinding
     }
     /// <summary>
-    /// µ±Ç°×´Ì¬
+    /// ï¿½ï¿½Ç°×´Ì¬
     /// </summary>
     public State currentState = State.WayFinding;
 
@@ -32,19 +32,20 @@ public class EnemyController : MonoBehaviour
     }
     void Update()
     {
-        //×´Ì¬ÇÐ»»
+        //×´Ì¬ï¿½Ð»ï¿½
         switch (currentState)
         {
-            case State.Attack:        //¹¥»÷×´Ì¬
+            case State.Attack:        //ï¿½ï¿½ï¿½ï¿½×´Ì¬
                 Attack();
                 break;
             case State.WayFinding:       //Ñ°Â·×´Ì¬
                 WayFinding();
                 break;
+
         }
     }
 
-    //Ñ°Â·Ä£¿é
+    //Ñ°Â·Ä£ï¿½ï¿½
     private void WayFinding()
     {
         AnimePlay(enemyAnimations.runAnimeName);
@@ -53,11 +54,11 @@ public class EnemyController : MonoBehaviour
             currentState = State.Attack;
         }
     }
-    //¹¥»÷¼ÆÊ±Æ÷
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
     private float attackTimer;
-    //¹¥»÷¼ä¸ô
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public float attackInterval = 3;
-    //¹¥»÷Ä£¿é
+    //ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
     private void Attack()
     {
         if (attackTimer <= Time.time)
@@ -67,9 +68,9 @@ public class EnemyController : MonoBehaviour
         }
     }
     /// <summary>
-    /// ²¥·Å¶¯»­
+    /// ï¿½ï¿½ï¿½Å¶ï¿½ï¿½ï¿½
     /// </summary>
-    /// <param name="animeName">¶¯»­Ãû³Æ</param>
+    /// <param name="animeName">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
     private void AnimePlay(string animeName)
     {
         if (!enemyAnimations.action.IsPlaying(animeName))
