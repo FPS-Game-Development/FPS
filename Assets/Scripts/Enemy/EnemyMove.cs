@@ -60,22 +60,17 @@ public class EnemyMove : MonoBehaviour
     /// <returns>·���Ƿ���Ч</returns>
     public bool WayFinding()
     {
+        Vector3 norVec = transform.rotation * Vector3.forward * 5;
+        float jiaJiao = Mathf.Acos(Vector3.Dot(norVec.normalized, (target.position - transform.position).normalized)) * Mathf.Rad2Deg; //计算两个向量间的夹角
+        //Debug.DrawRay(transform.position, norVec, Color.red);  // 敌人前进方向
+        //Debug.DrawLine(transform.position, target.position, Color.green);  //敌人与玩家连线
 
-        
-        if (Vector3.Distance(transform.position, target.position) < detectDistance)
+        if (Vector3.Distance(transform.position, target.position) < detectDistance && jiaJiao <= detectAngleRange * 0.5f)
         {
-            Vector3 norVec = transform.rotation * Vector3.forward * 5;
-            Debug.DrawRay(transform.position, norVec, Color.red);  // 敌人前进方向
-            Debug.DrawLine(transform.position, target.position, Color.green);  //敌人与玩家连线
-            float jiaJiao = Mathf.Acos(Vector3.Dot(norVec.normalized, (target.position - transform.position).normalized)) * Mathf.Rad2Deg; //计算两个向量间的夹角
-            if (jiaJiao <= detectAngleRange * 0.5f)
-            {
-                Debug.Log("在扇形范围内");
-                RotateByLookAtTarget(target.position);
-                MoveForward();
-                return true;
-            }
-            return false;
+            Debug.Log("在扇形范围内");
+            RotateByLookAtTarget(new Vector3(target.position.x, target.position.y - 1.2f, target.position.z)); // 基准为玩家脚底
+            MoveForward();
+            return true;
 
         }else
         {
