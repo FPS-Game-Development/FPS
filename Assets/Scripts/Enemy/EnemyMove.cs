@@ -21,8 +21,9 @@ public class EnemyMove : MonoBehaviour
 
     private Transform target;
     [Header("检测玩家")]
-    public float detectDistance = 10;//扇形距离
+    public float detectDistance = 15;//扇形距离
     public float detectAngleRange = 120;//扇形的角度
+    public float attackDistance = 10;
 
 
     private void Awake()
@@ -65,10 +66,14 @@ public class EnemyMove : MonoBehaviour
         //Debug.DrawRay(transform.position, norVec, Color.red);  // 敌人前进方向
         //Debug.DrawLine(transform.position, target.position, Color.green);  //敌人与玩家连线
 
-        if (Vector3.Distance(transform.position, target.position) < detectDistance && jiaJiao <= detectAngleRange * 0.5f)
+        float dis = Vector3.Distance(transform.position, target.position);
+        if (dis < detectDistance && jiaJiao <= detectAngleRange * 0.5f)
         {
             Debug.Log("在扇形范围内");
             RotateByLookAtTarget(new Vector3(target.position.x, target.position.y - 1.2f, target.position.z)); // 基准为玩家脚底
+            if (dis < attackDistance)
+                return false;
+         
             MoveForward();
             return true;
 
