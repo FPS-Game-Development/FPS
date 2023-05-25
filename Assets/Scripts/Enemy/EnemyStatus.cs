@@ -1,9 +1,9 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ¶¨ÒåµĞÈË×´Ì¬£¬Ìá¹©ÊÜÉË¡¢ËÀÍö¹¦ÄÜ
+/// å®šä¹‰æ•ŒäººçŠ¶æ€ï¼Œæä¾›å—ä¼¤ã€æ­»äº¡åŠŸèƒ½
 /// </summary>
 public class EnemyStatus : MonoBehaviour
 {
@@ -13,15 +13,15 @@ public class EnemyStatus : MonoBehaviour
         healthBar = GetComponent<EnemyHealthBar>();
     }
     /// <summary>
-    /// µ±Ç°ÑªÁ¿
+    /// å½“å‰è¡€é‡
     /// </summary>
     public float hp = 200;
     /// <summary>
-    /// ×î´óÑªÁ¿
+    /// æœ€å¤§è¡€é‡
     /// </summary>
     public float maxHP = 200;
 
-    public float HP            //µ±Ç°ÑªÁ¿
+    public float HP            //å½“å‰è¡€é‡
     {
         get
         {
@@ -45,9 +45,9 @@ public class EnemyStatus : MonoBehaviour
     }
 
     /// <summary>
-    /// µĞÈËÊÜÉË
+    /// æ•Œäººå—ä¼¤
     /// </summary>
-    /// <param name="damageNum">¿ÛÑªÊıÖµ</param>
+    /// <param name="damageNum">æ‰£è¡€æ•°å€¼</param>
     public void Damage(float damageNum)
     {
         HP -= damageNum;
@@ -58,12 +58,12 @@ public class EnemyStatus : MonoBehaviour
         }
     }
     /// <summary>
-    /// ËÀÍöÑÓ³ÙÊ±¼ä
+    /// æ­»äº¡å»¶è¿Ÿæ—¶é—´
     /// </summary>
     public float deathDelayTime = 0;
     public EnemyGenerator Generator;
     /// <summary>
-    /// µĞÈËËÀÍö
+    /// æ•Œäººæ­»äº¡
     /// </summary>
     public void Death()
     {

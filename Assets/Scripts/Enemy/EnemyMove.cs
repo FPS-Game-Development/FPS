@@ -1,47 +1,35 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 using UnityStandardAssets.Characters.FirstPerson;
 
 /// <summary>
-/// ���Ƶ��˵��ƶ�����ת��Ѱ·
+/// 控制敌人的移动、旋转和寻路
 /// </summary>
 public class EnemyMove : MonoBehaviour
 {
     /// <summary>
-    /// �����ٶ�
+    /// 敌人速度
     /// </summary>
     public float speed = 2;
     /// <summary>
-    /// ����·��
+    /// 敌人路线
     /// </summary>
     public Route way;
     public float rotateSpeed = 10;
 
-    private Transform target;
-    [Header("检测玩家")]
-    public float detectDistance = 15;//扇形距离
-    public float detectAngleRange = 120;//扇形的角度
-    public float attackDistance = 10;
-
-
-    private void Awake()
-    {
-        target = FindObjectOfType<RigidbodyFirstPersonController>().transform;
-    }
-
     /// <summary>
-    /// ��ǰ�ƶ�
+    /// 向前移动
     /// </summary>
     public void MoveForward()
     {
         transform.Translate(0,0,speed*Time.deltaTime);
     }
     /// <summary>
-    /// ��Ŀ�����ת
+    /// 向目标点旋转
     /// </summary>
-    /// <param name="target">Ŀ���</param>
+    /// <param name="target">目标点</param>
     public void RotateByLookAtTarget(Vector3 target)
     {
         Vector3 targetDirection = target - transform.position;
@@ -53,49 +41,19 @@ public class EnemyMove : MonoBehaviour
         //transform.LookAt(target);
     }
 
-    //Ѱ·��Ŀ��·�ߵ�
+    //寻路的目标路线点
     private int wayPointIndex = 0;
     /// <summary>
-    /// Ѱ·
+    /// 寻路
     /// </summary>
-    /// <returns>·���Ƿ���Ч</returns>
+    /// <returns>路线是否有效</returns>
     public bool WayFinding()
     {
-        Vector3 norVec = transform.rotation * Vector3.forward * 5;
-        float jiaJiao = Mathf.Acos(Vector3.Dot(norVec.normalized, (target.position - transform.position).normalized)) * Mathf.Rad2Deg; //计算两个向量间的夹角
-        //Debug.DrawRay(transform.position, norVec, Color.red);  // 敌人前进方向
-        //Debug.DrawLine(transform.position, target.position, Color.green);  //敌人与玩家连线
-
-        float dis = Vector3.Distance(transform.position, target.position);
-        if (dis < detectDistance && jiaJiao <= detectAngleRange * 0.5f)
-        {
-            Debug.Log("在扇形范围内");
-            RotateByLookAtTarget(new Vector3(target.position.x, target.position.y - 1.2f, target.position.z)); // 基准为玩家脚底
-            if (dis < attackDistance)
-                return false;
-         
-            MoveForward();
-            return true;
-
-        }else
-        {
             if (wayPointIndex >= way.RepresentWayLine.childCount) return false;
             RotateByLookAtTarget(way.RepresentWayLine.GetChild(wayPointIndex).position);
             MoveForward();
-            if (Vector3.Distance(this.transform.position, way.RepresentWayLine.GetChild(wayPointIndex).position) < 0.1)
+            if (Vector3.Distance(this.transform.position, way.RepresentWayLine.GetChild(wayPointIndex).position) < 1)
                 wayPointIndex++;
             return true;
-
-        }
-
-
-
-
-
     }
-
-
-
-
-  
 }

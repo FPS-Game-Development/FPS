@@ -1,35 +1,35 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Éú³ÉµĞÈË
+/// ç”Ÿæˆæ•Œäºº
 /// </summary>
 public class EnemyGenerator : MonoBehaviour
 {
     /// <summary>
-    /// µĞÈËÔ¤ÖÆ¼şÊı×é
+    /// æ•Œäººé¢„åˆ¶ä»¶æ•°ç»„
     /// </summary>
     public GameObject[] enemyType;
     /// <summary>
-    /// µĞÈË×î´óÉú³ÉÊıÁ¿
+    /// æ•Œäººæœ€å¤§ç”Ÿæˆæ•°é‡
     /// </summary>
     public int maxCount = 5;
     /// <summary>
-    /// µĞÈËÆğÊ¼Éú³ÉÊıÁ¿
+    /// æ•Œäººèµ·å§‹ç”Ÿæˆæ•°é‡
     /// </summary>
     public int startCount = 2;
-    //µĞÈËÏÖ´æÊıÁ¿
+    //æ•Œäººç°å­˜æ•°é‡
     public int CurCount = 0;
-    //µĞÈËÂ·Ïß¼¯ºÏ
+    //æ•Œäººè·¯çº¿é›†åˆ
     private Route[] routes;
     /// <summary>
-    /// ×î´óËæ»úÑÓ³ÙÊ±¼ä
+    /// æœ€å¤§éšæœºå»¶è¿Ÿæ—¶é—´
     /// </summary>
     public float maxDelayTime=5;
     private void Start()
     {
-        //³õÊ¼»¯Â·Ïß¼¯ºÏ
+        //åˆå§‹åŒ–è·¯çº¿é›†åˆ
         GtherRoutes();
         for(int i = 0; i< startCount; i++)
         {
@@ -38,47 +38,47 @@ public class EnemyGenerator : MonoBehaviour
     }
     public void GenerateEnemy()
     {
-        //ÅĞ¶ÏÊÇ·ñ¼ÌĞøÉú³ÉµĞÈË
+        //åˆ¤æ–­æ˜¯å¦ç»§ç»­ç”Ÿæˆæ•Œäºº
         if (CurCount >= maxCount) return;
         CurCount++;
         Invoke(nameof(GenerateOneEnemy), Random.Range(0, maxDelayTime));
     }
     /// <summary>
-    /// Éú³ÉÒ»¸öµĞÈË
+    /// ç”Ÿæˆä¸€ä¸ªæ•Œäºº
     /// </summary>
     private void GenerateOneEnemy()
     {
-        //Ñ¡Ôñ¿ÉÓÃÂ·ÏßÖ®Ò»
+        //é€‰æ‹©å¯ç”¨è·¯çº¿ä¹‹ä¸€
         Route choosedRoute = ChooseRoute(routes);
-        //´´½¨µĞÈË£¨³öÉúµØÒÔ¼°µĞÈËÀàĞÍ£©
+        //åˆ›å»ºæ•Œäººï¼ˆå‡ºç”Ÿåœ°ä»¥åŠæ•Œäººç±»å‹ï¼‰
         GameObject enemy = CreatEnemy(choosedRoute);
-        //ÊäÈëÂ·Ïß
+        //è¾“å…¥è·¯çº¿
         enemy.GetComponent<EnemyMove>().way = choosedRoute;
         choosedRoute.IsUsable = false;
     }
-    //µĞÈË³öÉúÎ»ÖÃ
+    //æ•Œäººå‡ºç”Ÿä½ç½®
     private Vector3 startPoint;
-    //µĞÈË³öÉúĞı×ª½Ç¶È
+    //æ•Œäººå‡ºç”Ÿæ—‹è½¬è§’åº¦
     private Quaternion startRotation;
-    //Éú³ÉµĞÈË
+    //ç”Ÿæˆæ•Œäºº
     private GameObject CreatEnemy(Route choosedRoute)
     {
         startPoint = choosedRoute.RepresentWayLine.position;
         startRotation = choosedRoute.RepresentWayLine.rotation;
         int typeIndex = Random.Range(0, enemyType.Length);
         GameObject enemy = Instantiate(enemyType[typeIndex], startPoint, startRotation) as GameObject;
-        //´«µİÉú³ÉÆ÷¶ÔÏóÒıÓÃ
+        //ä¼ é€’ç”Ÿæˆå™¨å¯¹è±¡å¼•ç”¨
         enemy.GetComponent<EnemyStatus>().Generator = this;
         return enemy;
     }
-    //Ñ¡ÔñÂ·Ïß
+    //é€‰æ‹©è·¯çº¿
     private Route ChooseRoute(Route[] routes)
     {
         Route[] usefulRoutes = UsefulRoute(routes);
         int routeIndex = Random.Range(0, usefulRoutes.Length);
         return usefulRoutes[routeIndex];
     }
-    //¿ÉÓÃÂ·Ïß¼¯ºÏ
+    //å¯ç”¨è·¯çº¿é›†åˆ
     private Route[] UsefulRoute(Route[] routes)
     {
         List<Route> routesList = new(routes.Length);
@@ -88,7 +88,7 @@ public class EnemyGenerator : MonoBehaviour
         }
         return routesList.ToArray();
     }
-    //Â·Ïß¼¯ºÏ
+    //è·¯çº¿é›†åˆ
     private void GtherRoutes()
     {
         routes = new Route[transform.childCount];
