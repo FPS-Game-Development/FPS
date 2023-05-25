@@ -1,27 +1,27 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
-/// ¶¨ÒåµĞÈËÂ·Ïß
+/// å®šä¹‰æ•Œäººè·¯çº¿
 /// </summary>
 public class Route
 {
     /// <summary>
-    /// Â·Ïß´ú±í
+    /// è·¯çº¿ä»£è¡¨
     /// </summary>
     public Transform RepresentWayLine { get; set;}
     /// <summary>
-    /// Â·ÏßÊÇ·ñ¿ÉÓÃ
+    /// è·¯çº¿æ˜¯å¦å¯ç”¨
     /// </summary>
     public bool IsUsable { get; set; }
 
     /// <summary>
-    /// ´´½¨Â·Ïß
+    /// åˆ›å»ºè·¯çº¿
     /// </summary>
-    /// <param name="wayLinePoints">Â·Ïßµã¼¯ºÏ</param>
-    /// <param name="wayPointCount">Â·ÏßµãÊıÄ¿</param>
+    /// <param name="wayLinePoints">è·¯çº¿ç‚¹é›†åˆ</param>
+    /// <param name="wayPointCount">è·¯çº¿ç‚¹æ•°ç›®</param>
     public Route(Transform WayLine)
     {
         this.RepresentWayLine = WayLine;

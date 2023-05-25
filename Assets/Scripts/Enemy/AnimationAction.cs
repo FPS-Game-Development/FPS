@@ -1,33 +1,33 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Ìá¹©¶¯»­ĞĞÎª
+/// æä¾›åŠ¨ç”»è¡Œä¸º
 /// </summary>
 public class AnimationAction
 {
     private readonly Animation anim;
     /// <summary>
-    /// Ìá¹©¶¯»­ĞĞÎª
+    /// æä¾›åŠ¨ç”»è¡Œä¸º
     /// </summary>
-    /// <param name="anim">¶¯»­</param>
+    /// <param name="anim">åŠ¨ç”»</param>
     public AnimationAction(Animation anim)
     {
         this.anim = anim;
     }
     /// <summary>
-    /// ¶¯»­²¥·Å
+    /// åŠ¨ç”»æ’­æ”¾
     /// </summary>
-    /// <param name="animName">¶¯»­Ãû³Æ</param>
+    /// <param name="animName">åŠ¨ç”»åç§°</param>
     public void PlayAnime(string animName)
     {
         anim.CrossFade(animName);
     }
     /// <summary>
-    /// Ö¸¶¨¶¯»­ÊÇ·ñÔÚ²¥·Å
+    /// æŒ‡å®šåŠ¨ç”»æ˜¯å¦åœ¨æ’­æ”¾
     /// </summary>
-    /// <param name="animName">¶¯»­Ãû³Æ</param>
+    /// <param name="animName">åŠ¨ç”»åç§°</param>
     /// <returns></returns>
     public bool IsPlaying(string animName)
     {
