@@ -39,6 +39,10 @@ public class GunController : MonoBehaviour
                 FireBullet();
                 Magazine = Magazine -1;
                 
+            }else if(Input.GetKeyDown(KeyCode.R)){
+                Magazine = 0;
+                Reloading();
+
             }
         }else if(Magazine == 0){
             Reloading();
@@ -59,7 +63,7 @@ public class GunController : MonoBehaviour
             note.SetActive(true);
         }
         
-        Debug.Log("Player Reloading");
+        // Debug.Log("Player Reloading");
         if (ReloadTimer + ReloadInterval <=  Time.time){
             Magazine = 20;
             ReloadTimer = -1;

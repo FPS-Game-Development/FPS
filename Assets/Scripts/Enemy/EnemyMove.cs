@@ -68,7 +68,7 @@ public class EnemyMove : MonoBehaviour
         
         if (dis < detectDistance && jiaJiao <= detectAngleRange * 0.5f)
         {
-            Debug.Log("在扇形范围内");
+            // Debug.Log("在扇形范围内");
             RotateByLookAtTarget(new Vector3(target.position.x, target.position.y - 1.2f, target.position.z)); // 基准为玩家脚底
             
             if (dis < attackDistance)
@@ -92,13 +92,13 @@ public class EnemyMove : MonoBehaviour
 
                 if(waytype)wayPointIndex++;
                 else wayPointIndex--;
-                Debug.Log(wayPointIndex);
+                // Debug.Log(wayPointIndex);
             } 
             
             RotateByLookAtTarget(way.RepresentWayLine.GetChild(wayPointIndex).position);
             MoveForward();
             if (Vector3.Distance(this.transform.position, way.RepresentWayLine.GetChild(wayPointIndex).position) < 0.1){
-                Debug.Log(wayPointIndex);
+                // Debug.Log(wayPointIndex);
                 if(waytype)wayPointIndex++;
                 else wayPointIndex--;
             }

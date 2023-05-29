@@ -360,6 +360,7 @@
 "Assets/Scripts/Enemy/Route.cs"
 "Assets/Scripts/GunController.cs"
 "Assets/Scripts/Hit.cs"
+"Assets/Scripts/Player/DrawStar.cs"
 "Assets/Scripts/Player/GunBar.cs"
 "Assets/Scripts/Player/PlayerHealthBar.cs"
 "Assets/Scripts/Player/PlayerMovement.cs"
