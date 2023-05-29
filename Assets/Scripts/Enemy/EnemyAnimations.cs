@@ -16,6 +16,10 @@ public class EnemyAnimations: MonoBehaviour
     private void Awake()
     {
         //调用动画运作模块
+        // AnimationState state = GetComponentInChildren<Animation>()[attackAnimeName];
+        // if (!state) state.speed = speed;
+        
         action = new AnimationAction(GetComponentInChildren<Animation>());
+        
     }
 }

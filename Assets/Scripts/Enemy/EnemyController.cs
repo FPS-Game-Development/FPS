@@ -18,8 +18,12 @@ public class EnemyController : MonoBehaviour
     public enum State
     {
         Attack,
-        WayFinding
+        WayFinding,
+        Reloading
     }
+
+    private int Magazine = 20;
+
     /// <summary>
     /// 当前状态
     /// </summary>
@@ -29,86 +33,92 @@ public class EnemyController : MonoBehaviour
     private EnemyAnimations enemyAnimations;
     void Start()
     {
-        target = FindObjectOfType<RigidbodyFirstPersonController>().transform;
+        // target = FindObjectOfType<RigidbodyFirstPersonController>().transform;
         enemyMove = GetComponent<EnemyMove>();
         enemyAnimations = GetComponent<EnemyAnimations>();
+        Magazine = 30;
+    
     }
+
+
     void Update()
     {
-        //状态切换
+        //״̬�л�
         switch (currentState)
         {
-            case State.Attack:        //攻击状态
+            case State.Attack:        //����״̬
                 Attack();
                 break;
-            case State.WayFinding:       //寻路状态
+            case State.WayFinding:       //Ѱ·״̬
                 WayFinding();
                 break;
-        }
-        CheckAttckRange();
-    }
+            case State.Reloading:       //Ѱ·״̬
+                Reloading();
+                break;
 
-    /// <summary>
-    /// 检查玩家是否在攻击范围内
-    /// </summary>
-    private Transform target;    //玩家对象
-    [Header("检测玩家")]
-    public float detectDistance = 30;    //扇形距离
-    public float detectAngleRange = 120;    //扇形的角度
-    public float attackDistance = 10;
-    private void CheckAttckRange()
-    {
-        Vector3 norVec = transform.rotation * Vector3.forward * 5;
-        float jiaJiao = Mathf.Acos(Vector3.Dot(norVec.normalized, (target.position - transform.position).normalized)) * Mathf.Rad2Deg;     //计算两个向量间的夹角
-        float dis = Vector3.Distance(transform.position, target.position);
-        if (Vector3.Distance(transform.position, target.position) < detectDistance && jiaJiao <= detectAngleRange * 0.5f)
-        {
-            enemyMove.RotateByLookAtTarget(new Vector3(target.position.x + 0.4f, target.position.y - 1.2f, target.position.z));     // 基准为玩家脚底
-            if (dis < attackDistance)
-                currentState = State.Attack;
-            else
-                currentState = State.WayFinding;
-        }
-        else
-        {
-            currentState = State.WayFinding;
         }
     }
 
-    /// <summary>
-    /// 寻路模块
-    /// </summary>
     private void WayFinding()
     {
-        if (!enemyMove.WayFinding())
+        AnimePlay(enemyAnimations.runAnimeName);
+        if (!enemyMove.WayFinding()) 
         {
-            AnimePlay(enemyAnimations.idleAnimeName);
             currentState = State.Attack;
         }
-        else
-            AnimePlay(enemyAnimations.runAnimeName);
+    }
+
+    private float ReloadTimer = -1;          //换弹计时器
+    public float ReloadInterval = 10;    //换弹间隔
+
+    private void Reloading()
+    {
+        
+        if(ReloadTimer == -1){
+            ReloadTimer = Time.time;
+        }
+        
+        AnimePlay(enemyAnimations.idleAnimeName);
+        // Debug.Log("Reloading");
+        if (ReloadTimer + ReloadInterval <=  Time.time){
+            Magazine = 20;
+            currentState = State.WayFinding;
+            ReloadTimer = -1;
+        }
     }
 
     /// <summary>
     ///攻击模块
     /// </summary>
     private float attackTimer;    //攻击计时器
-    public float attackInterval = 2;    //攻击间隔
+    public float attackInterval = 0.1f;    //攻击间隔
 
     public GameObject bullet;    //子弹对象
     public Transform spawnPoint;    //开火点
     public float fireSpeed = 40;    //子弹速度
     private void Attack()
     {
-        if (attackTimer <= Time.time)
+        if (enemyMove.WayFinding()) 
+        {
+            currentState = State.WayFinding;
+        }
+        
+        if (attackTimer <= Time.time &&  Magazine >= 1)
         {
             GameObject spawnBullet = Instantiate(bullet, spawnPoint.position, spawnPoint.rotation);
             spawnBullet.GetComponent<BullesDamageBool>().category = "Enemy";
             spawnBullet.GetComponent<Rigidbody>().velocity = -spawnPoint.right * fireSpeed;
             Destroy(spawnBullet, 5);
+            // anim[enemyAnimations.attackAnimeName].speed = 3.0f;
+
+
             AnimePlay(enemyAnimations.attackAnimeName);
             attackTimer = Time.time + attackInterval;
-        }
+            Magazine = Magazine - 1;
+            if(Magazine == 0){
+                currentState = State.Reloading;
+            }
+        } 
     }
     /// <summary>
     /// 播放动画
@@ -118,6 +128,9 @@ public class EnemyController : MonoBehaviour
     {
         if (!enemyAnimations.action.IsPlaying(animeName))
         {
+            // enemyAnimations.action.Scale = 3;
+
+            // if(animeNameattackAnimeName
             enemyAnimations.action.PlayAnime(animeName);
         }
     }

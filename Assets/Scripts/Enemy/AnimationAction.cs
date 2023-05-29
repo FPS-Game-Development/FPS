@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class AnimationAction
 {
-    private readonly Animation anim;
+    public readonly Animation anim;
     /// <summary>
     /// 提供动画行为
     /// </summary>

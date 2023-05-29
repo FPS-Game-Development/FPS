@@ -63,7 +63,8 @@ public class EnemyGenerator : MonoBehaviour
     //生成敌人
     private GameObject CreatEnemy(Route choosedRoute)
     {
-        startPoint = choosedRoute.RepresentWayLine.position;
+        // startPoint = choosedRoute.RepresentWayLine.position;
+        startPoint = new Vector3(choosedRoute.RepresentWayLine.position.x - 5,choosedRoute.RepresentWayLine.position.y,choosedRoute.RepresentWayLine.position.z);
         startRotation = choosedRoute.RepresentWayLine.rotation;
         int typeIndex = Random.Range(0, enemyType.Length);
         GameObject enemy = Instantiate(enemyType[typeIndex], startPoint, startRotation) as GameObject;
